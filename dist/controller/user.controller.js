@@ -8,6 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -21,20 +30,26 @@ let UserController = class UserController {
         this.router = new express_1.Router();
     }
     createUser(req, res) {
-        const dto = {
-            firstName: "John",
-            lastName: "Doe",
-            email: "johndoe@gmail.com"
-        };
-        const user = this.service.create(dto);
-        res.json(user);
+        return __awaiter(this, void 0, void 0, function* () {
+            const newUser = req.body;
+            if (!newUser.firstName || !newUser.lastName || !newUser.email) {
+                res.status(400);
+                throw new Error("All fields are mandatory");
+            }
+            const user = yield this.service.create(newUser);
+            res.status(201).json(user);
+        });
     }
-    getUsers() {
-        const users = this.service.findAll();
-        return users;
+    getUsers(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const users = yield this.service.findAll();
+            console.log("CONTROLLER USERS: ", users);
+            res.json(users);
+        });
     }
     routes() {
-        this.router.get('/', (req, res) => res.send(this.getUsers()));
+        this.router.get("/", (req, res) => this.getUsers(req, res));
+        this.router.post("/", (req, res) => this.createUser(req, res));
         return this.router;
     }
 };

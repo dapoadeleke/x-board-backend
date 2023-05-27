@@ -13,23 +13,24 @@ export default class UserController {
         this.router = new Router();
     }
 
-    createUser(req, res) {
-        const dto: NewUserDto = {
-            firstName: "John",
-            lastName: "Doe",
-            email: "johndoe@gmail.com"
+    async createUser(req, res) {
+        const newUser: NewUserDto = req.body;
+        if (!newUser.firstName || !newUser.lastName || !newUser.email) {
+            res.status(400)
+            throw new Error("All fields are mandatory");
         }
-        const user = this.service.create(dto);
-        res.json(user);
+        const user = await this.service.create(newUser);
+        res.status(201).json(user);
     }
 
-    getUsers() {
-        const users = this.service.findAll();
-        return users;
+    async getUsers(req, res) {
+        const users = await this.service.findAll();
+        res.json(users);
     }
 
     routes() {
-        this.router.get('/', (req, res) => res.send(this.getUsers()))
+        this.router.get("/", (req, res) => this.getUsers(req, res));
+        this.router.post("/", (req, res) => this.createUser(req, res));
         return this.router;
     }
 

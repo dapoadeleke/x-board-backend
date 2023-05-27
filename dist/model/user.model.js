@@ -20,11 +20,7 @@ User.init({
     },
     email: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    passwordHash: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     }
 }, {
     sequelize: db_config_1.default,

@@ -30,15 +30,14 @@ let UserRepository = class UserRepository {
     }
     create(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const u = yield user_model_1.User.create({ firstName: "Jane", lastName: "Doe" });
-            // const u = await User.create(user)
+            const u = yield user_model_1.User.create(user);
+            console.log('u: ', u);
             return this.converter.convertToDto(u);
         });
     }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const users = yield user_model_1.User.findAll();
-            return users.map(user => this.converter.convertToDto(user));
+            return yield user_model_1.User.findAll();
         });
     }
 };

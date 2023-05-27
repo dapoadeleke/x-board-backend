@@ -14,12 +14,12 @@ export default class UserService {
     }
 
     create(newUserDto: NewUserDto): Promise<UserDto> {
-        const userModel = this.converter.convertToModel(newUserDto);
-        return this.repository.create(userModel);
+        return this.repository.create(newUserDto);
     }
 
-    findAll(): Promise<UserDto[]> {
-        return this.repository.findAll();
+    async findAll(): Promise<UserDto[]> {
+        const users = await this.repository.findAll();
+        return users.map(u => this.converter.convertToDto(u));
     }
 
 }

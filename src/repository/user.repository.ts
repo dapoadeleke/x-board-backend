@@ -11,15 +11,13 @@ export default class UserRepository {
         this.converter = converter;
     }
 
-    async create(user: User): Promise<UserDto> {
-        const u = await User.create({ firstName: "Jane", lastName: "Doe" })
-        // const u = await User.create(user)
+    async create(user: any): Promise<UserDto> {
+        const u = await User.create(user);
         return this.converter.convertToDto(u);
     }
 
-    async findAll(): Promise<UserDto[]> {
-        const users = await User.findAll();
-        return users.map(user => this.converter.convertToDto(user));
+    async findAll(): Promise<User[]> {
+        return await User.findAll();
     }
 
 }

@@ -25,10 +25,6 @@ wss.on("connection", (client: any) => {
     wss.send("something");
 });
 
-// app.get('/', (req, res) => {
-//     res.send('Hello World!');
-// });
-
 app.use(express.json());
 app.use('/api/v1/users', container.resolve(UserController).routes());
 
