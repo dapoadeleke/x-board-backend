@@ -6,6 +6,7 @@ import {Server} from "socket.io";
 import sequelize from "./config/db.config";
 import UserController from "./controller/user.controller";
 import {container} from "tsyringe";
+import ErrorHandler from "./middleware/error.handler";
 
 const app = express();
 const port = 5001;
@@ -27,6 +28,7 @@ wss.on("connection", (client: any) => {
 
 app.use(express.json());
 app.use('/api/v1/users', container.resolve(UserController).routes());
+app.use(ErrorHandler.handle);
 
 const start = async (): Promise<void> => {
     try {
@@ -41,5 +43,6 @@ const start = async (): Promise<void> => {
 }
 
 void start();
+
 
 

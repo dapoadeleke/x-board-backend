@@ -19,6 +19,7 @@ const socket_io_1 = require("socket.io");
 const db_config_1 = __importDefault(require("./config/db.config"));
 const user_controller_1 = __importDefault(require("./controller/user.controller"));
 const tsyringe_1 = require("tsyringe");
+const error_handler_1 = __importDefault(require("./middleware/error.handler"));
 const app = (0, express_1.default)();
 const port = 5001;
 const httpServer = new http_1.default.Server(app);
@@ -37,6 +38,7 @@ wss.on("connection", (client) => {
 });
 app.use(express_1.default.json());
 app.use('/api/v1/users', tsyringe_1.container.resolve(user_controller_1.default).routes());
+app.use(error_handler_1.default.handle);
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield db_config_1.default.sync();

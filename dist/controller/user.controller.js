@@ -33,8 +33,8 @@ let UserController = class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const newUser = req.body;
             if (!newUser.firstName || !newUser.lastName || !newUser.email) {
-                res.status(400);
-                throw new Error("All fields are mandatory");
+                res.status(400).json({ error: "All fields are mandatory" });
+                return;
             }
             const user = yield this.service.create(newUser);
             res.status(201).json(user);

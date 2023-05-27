@@ -16,8 +16,8 @@ export default class UserController {
     async createUser(req, res) {
         const newUser: NewUserDto = req.body;
         if (!newUser.firstName || !newUser.lastName || !newUser.email) {
-            res.status(400)
-            throw new Error("All fields are mandatory");
+            res.status(400).json({ error: "All fields are mandatory" });
+            return;
         }
         const user = await this.service.create(newUser);
         res.status(201).json(user);
