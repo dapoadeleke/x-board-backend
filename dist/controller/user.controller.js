@@ -43,7 +43,6 @@ let UserController = class UserController {
     getUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const users = yield this.service.findAll();
-            console.log("CONTROLLER USERS: ", users);
             res.json(users);
         });
     }

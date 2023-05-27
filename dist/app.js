@@ -35,9 +35,6 @@ wss.on("connection", (client) => {
     });
     wss.send("something");
 });
-// app.get('/', (req, res) => {
-//     res.send('Hello World!');
-// });
 app.use(express_1.default.json());
 app.use('/api/v1/users', tsyringe_1.container.resolve(user_controller_1.default).routes());
 const start = () => __awaiter(void 0, void 0, void 0, function* () {

@@ -31,7 +31,6 @@ let UserRepository = class UserRepository {
     create(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const u = yield user_model_1.User.create(user);
-            console.log('u: ', u);
             return this.converter.convertToDto(u);
         });
     }
