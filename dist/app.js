@@ -39,7 +39,7 @@ wss.on("connection", (client) => {
 //     res.send('Hello World!');
 // });
 app.use(express_1.default.json());
-app.use('/api/v1/users', tsyringe_1.container.resolve(user_controller_1.default).routes);
+app.use('/api/v1/users', tsyringe_1.container.resolve(user_controller_1.default).routes());
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield db_config_1.default.sync();

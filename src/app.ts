@@ -30,7 +30,7 @@ wss.on("connection", (client: any) => {
 // });
 
 app.use(express.json());
-app.use('/api/v1/users', container.resolve(UserController).routes);
+app.use('/api/v1/users', container.resolve(UserController).routes());
 
 const start = async (): Promise<void> => {
     try {

@@ -10,22 +10,21 @@
   },
   "author": "Dapo Adeleke",
   "license": "MIT",
-  "dependencies": {
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-async-handler": "^1.2.0",
-    "mysql2": "^3.3.2",
-    "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.31.1",
-    "sequelize-typescript": "^2.1.5",
-    "socket.io": "^4.6.1",
-    "sqlite3": "^5.1.6",
-    "tsyringe": "^4.7.0"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/validator": "^13.7.17",
-    "nodemon": "^2.0.22",
-    "typescript": "^5.0.4"
-  }
+    "devDependencies": {
+        "@types/node": "^14.14.31",
+        "jest": "^26.6.3",
+        "nodemon": "^2.0.7",
+        "sinon": "^9.2.4",
+        "ts-jest": "^26.5.2",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.2.2"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "reflect-metadata": "^0.1.13",
+        "tsyringe": "^4.4.0",
+        "sequelize": "^6.31.1",
+        "socket.io": "^4.6.1",
+        "sqlite3": "^5.1.6"
+    }
 }
