@@ -25,27 +25,18 @@ const tsyringe_1 = require("tsyringe");
 const express_1 = require("express");
 const user_service_1 = __importDefault(require("../service/user.service"));
 const user_converter_1 = __importDefault(require("../converter/user.converter"));
+const express_async_handler_1 = __importDefault(require("express-async-handler"));
 let UserController = class UserController {
     constructor(service, converter) {
         this.service = service;
         this.converter = converter;
+        // @ts-ignore
         this.router = new express_1.Router();
     }
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let newUser = req; //this.converter.convertRequest(req);
-            // const errors = await validate(newUser);
-            // if (errors.length > 0) {
-            //     res.status(400).json({ error: errors });
-            //     return;
-            // }
-            // validate(newUser).then(errors => {
-            //     if (errors.length > 0) {
-            //         res.status(400).json({ error: errors });
-            //         return;
-            //     }
-            // });
-            if (!newUser.firstName || !newUser.lastName || !newUser.email) {
+            let newUser = req.body;
+            if (!newUser.name || !newUser.email) {
                 res.status(400).json({ error: "All fields are mandatory" });
                 return;
             }
@@ -60,8 +51,8 @@ let UserController = class UserController {
         });
     }
     routes() {
-        this.router.get("/", (req, res) => this.getUsers(req, res));
-        this.router.post("/", (req, res) => this.createUser(req, res));
+        this.router.get("/", (0, express_async_handler_1.default)((req, res) => this.getUsers(req, res)));
+        this.router.post("/", (0, express_async_handler_1.default)((req, res) => this.createUser(req, res)));
         return this.router;
     }
 };

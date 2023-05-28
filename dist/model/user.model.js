@@ -10,17 +10,17 @@ class User extends sequelize_1.Model {
 }
 exports.User = User;
 User.init({
-    firstName: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    lastName: {
+    name: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
     email: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: true
+        allowNull: false
+    },
+    passwordHash: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     }
 }, {
     sequelize: db_config_1.default,

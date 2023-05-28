@@ -1,9 +1,9 @@
 import {autoInjectable} from 'tsyringe';
 import {Router} from 'express';
 import UserService from '../service/user.service';
-import {NewUserDto} from "../dto/new-user.dto";
-import {validate, validateOrReject} from "class-validator";
 import UserConverter from "../converter/user.converter";
+import asyncHandler from 'express-async-handler';
+
 
 @autoInjectable()
 export default class UserController {
@@ -15,25 +15,13 @@ export default class UserController {
     constructor(service: UserService, converter: UserConverter) {
         this.service = service;
         this.converter = converter;
+        // @ts-ignore
         this.router = new Router();
     }
 
     async createUser(req, res) {
-        let newUser: NewUserDto = req; //this.converter.convertRequest(req);
-        // const errors = await validate(newUser);
-        // if (errors.length > 0) {
-        //     res.status(400).json({ error: errors });
-        //     return;
-        // }
-
-        // validate(newUser).then(errors => {
-        //     if (errors.length > 0) {
-        //         res.status(400).json({ error: errors });
-        //         return;
-        //     }
-        // });
-
-        if (!newUser.firstName || !newUser.lastName || !newUser.email) {
+        let newUser: NewUserDto = req.body;
+        if (!newUser.name || !newUser.email) {
             res.status(400).json({ error: "All fields are mandatory" });
             return;
         }
@@ -47,8 +35,8 @@ export default class UserController {
     }
 
     routes() {
-        this.router.get("/", (req, res) => this.getUsers(req, res));
-        this.router.post("/", (req, res) => this.createUser(req, res));
+        this.router.get("/", asyncHandler((req, res) => this.getUsers(req, res)));
+        this.router.post("/", asyncHandler((req, res) => this.createUser(req, res)));
         return this.router;
     }
 

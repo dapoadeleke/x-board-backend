@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -17,21 +14,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_model_1 = require("../model/user.model");
 const tsyringe_1 = require("tsyringe");
-const user_converter_1 = __importDefault(require("../converter/user.converter"));
 let UserRepository = class UserRepository {
-    constructor(converter) {
-        this.converter = converter;
-    }
     create(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const u = yield user_model_1.User.create(user);
-            return this.converter.convertToDto(u);
+            return yield user_model_1.User.create(user);
         });
     }
     findAll() {
@@ -39,10 +28,18 @@ let UserRepository = class UserRepository {
             return yield user_model_1.User.findAll();
         });
     }
+    findByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield user_model_1.User.findAll({
+                where: {
+                    email: email
+                }
+            });
+        });
+    }
 };
 UserRepository = __decorate([
-    (0, tsyringe_1.autoInjectable)(),
-    __metadata("design:paramtypes", [user_converter_1.default])
+    (0, tsyringe_1.autoInjectable)()
 ], UserRepository);
 exports.default = UserRepository;
 //# sourceMappingURL=user.repository.js.map

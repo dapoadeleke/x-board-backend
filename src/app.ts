@@ -8,6 +8,7 @@ import UserController from "./controller/user.controller";
 import {container} from "tsyringe";
 import ErrorHandler from "./middleware/error.handler";
 
+
 const app = express();
 const port = 5001;
 const httpServer = new http.Server(app);

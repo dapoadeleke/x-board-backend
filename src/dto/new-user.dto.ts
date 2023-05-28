@@ -1,10 +1,5 @@
-import {IsEmail, IsNotEmpty, Length} from "class-validator";
 
-export class NewUserDto {
-    @IsNotEmpty()
-    firstName: string;
-    @IsNotEmpty()
-    lastName: string;
-    @IsEmail()
+interface NewUserDto {
+    name: string;
     email: string;
 }
