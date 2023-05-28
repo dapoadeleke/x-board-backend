@@ -3,6 +3,8 @@ import {Router} from 'express';
 import UserService from '../service/user.service';
 import UserConverter from "../converter/user.converter";
 import asyncHandler from 'express-async-handler';
+import {UserRequest} from "../dto/user.request";
+import {validate} from "class-validator";
 
 
 @autoInjectable()
@@ -20,12 +22,15 @@ export default class UserController {
     }
 
     async createUser(req, res) {
-        let newUser: NewUserDto = req.body;
-        if (!newUser.name || !newUser.email) {
-            res.status(400).json({ error: "All fields are mandatory" });
-            return;
+        let userRequest: UserRequest = new UserRequest();
+        userRequest.name = req.body.name;
+        userRequest.email = req.body.email;
+        const errors = await validate(userRequest);
+        if (errors.length > 0) {
+            res.status(400).json({error: errors})
+            return
         }
-        const user = await this.service.create(newUser);
+        const user = await this.service.create(userRequest);
         res.status(201).json(user);
     }
 

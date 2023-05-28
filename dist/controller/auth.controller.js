@@ -21,41 +21,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const login_request_1 = require("../dto/login-request");
+const class_validator_1 = require("class-validator");
+const auth_service_1 = __importDefault(require("../service/auth.service"));
 const tsyringe_1 = require("tsyringe");
-const user_repository_1 = __importDefault(require("../repository/user.repository"));
-const user_converter_1 = __importDefault(require("../converter/user.converter"));
-const security_1 = __importDefault(require("../utils/security"));
-let UserService = class UserService {
-    constructor(repository, converter, security) {
-        this.repository = repository;
-        this.converter = converter;
-        this.security = security;
+let AuthController = class AuthController {
+    constructor(service) {
+        this.service = service;
+        // @ts-ignore
+        this.router = new express_1.Router();
     }
-    create(newUserDto) {
+    login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userByEmail = yield this.repository.findByEmail(newUserDto.email);
-            if (userByEmail) {
-                throw new Error("Email address has been previously registered");
+            let loginRequest = new login_request_1.LoginRequest();
+            loginRequest.email = req.body.email;
+            loginRequest.password = req.body.password;
+            const errors = yield (0, class_validator_1.validate)(loginRequest);
+            if (errors.length > 0) {
+                res.status(400).json({ error: errors });
+                return;
             }
-            const passwordHash = yield this.security.hashPassword("Password123");
-            const user = yield this.repository.create({
-                name: newUserDto.name,
-                email: newUserDto.email,
-                passwordHash: passwordHash
-            });
-            return this.converter.convertToDto(user);
+            const loginResponse = yield this.service.login(loginRequest);
+            res.status(200).json(loginResponse);
         });
     }
-    findAll() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const users = yield this.repository.findAll();
-            return users.map(u => this.converter.convertToDto(u));
-        });
+    routes() {
+        this.router.post("/login", (0, express_async_handler_1.default)((req, res) => this.login(req, res)));
+        return this.router;
     }
 };
-UserService = __decorate([
+AuthController = __decorate([
     (0, tsyringe_1.autoInjectable)(),
-    __metadata("design:paramtypes", [user_repository_1.default, user_converter_1.default, security_1.default])
-], UserService);
-exports.default = UserService;
-//# sourceMappingURL=user.service.js.map
+    __metadata("design:paramtypes", [auth_service_1.default])
+], AuthController);
+exports.default = AuthController;
+//# sourceMappingURL=auth.controller.js.map

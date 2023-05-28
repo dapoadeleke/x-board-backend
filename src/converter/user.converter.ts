@@ -10,11 +10,4 @@ export default class UserConverter {
         };
     }
 
-    convertToModel(dto: NewUserDto): User {
-        const model = new User();
-        model.setDataValue("name", dto.name);
-        model.setDataValue("email", dto.email);
-        return model;
-    }
-
 }

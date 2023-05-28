@@ -13,11 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class Security {
     hashPassword(password) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield bcrypt_1.default.hash(password, 10);
         });
+    }
+    compare(password, hashPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield bcrypt_1.default.compare(password, hashPassword);
+        });
+    }
+    generateAccessToken(user) {
+        return jsonwebtoken_1.default.sign({
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email
+            }
+        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
     }
 }
 exports.default = Security;

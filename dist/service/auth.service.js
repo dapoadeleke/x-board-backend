@@ -21,41 +21,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const tsyringe_1 = require("tsyringe");
 const user_repository_1 = __importDefault(require("../repository/user.repository"));
-const user_converter_1 = __importDefault(require("../converter/user.converter"));
+const tsyringe_1 = require("tsyringe");
 const security_1 = __importDefault(require("../utils/security"));
-let UserService = class UserService {
-    constructor(repository, converter, security) {
-        this.repository = repository;
-        this.converter = converter;
+const user_converter_1 = __importDefault(require("../converter/user.converter"));
+let AuthService = class AuthService {
+    constructor(userRepository, security, userConverter) {
+        this.userRepository = userRepository;
         this.security = security;
+        this.userConverter = userConverter;
     }
-    create(newUserDto) {
+    login(request) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userByEmail = yield this.repository.findByEmail(newUserDto.email);
-            if (userByEmail) {
-                throw new Error("Email address has been previously registered");
+            const user = yield this.userRepository.findByEmail(request.email);
+            if (!user || !(yield this.security.compare(request.password, user.getDataValue("passwordHash")))) {
+                throw new Error("Invalid email and/or password");
             }
-            const passwordHash = yield this.security.hashPassword("Password123");
-            const user = yield this.repository.create({
-                name: newUserDto.name,
-                email: newUserDto.email,
-                passwordHash: passwordHash
-            });
-            return this.converter.convertToDto(user);
-        });
-    }
-    findAll() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const users = yield this.repository.findAll();
-            return users.map(u => this.converter.convertToDto(u));
+            const userDto = this.userConverter.convertToDto(user);
+            return {
+                name: userDto.name,
+                email: userDto.email,
+                token: this.security.generateAccessToken(userDto)
+            };
         });
     }
 };
-UserService = __decorate([
+AuthService = __decorate([
     (0, tsyringe_1.autoInjectable)(),
-    __metadata("design:paramtypes", [user_repository_1.default, user_converter_1.default, security_1.default])
-], UserService);
-exports.default = UserService;
-//# sourceMappingURL=user.service.js.map
+    __metadata("design:paramtypes", [user_repository_1.default, security_1.default, user_converter_1.default])
+], AuthService);
+exports.default = AuthService;
+//# sourceMappingURL=auth.service.js.map

@@ -7,9 +7,12 @@ import sequelize from "./config/db.config";
 import UserController from "./controller/user.controller";
 import {container} from "tsyringe";
 import ErrorHandler from "./middleware/error.handler";
+import AuthController from "./controller/auth.controller";
+import * as dotenv from "dotenv";
 
 
 const app = express();
+dotenv.config();
 const port = 5001;
 const httpServer = new http.Server(app);
 const wss = new Server(httpServer, {cors: {origin: '*'}});
@@ -28,7 +31,8 @@ wss.on("connection", (client: any) => {
 });
 
 app.use(express.json());
-app.use('/api/v1/users', container.resolve(UserController).routes());
+app.use("/api/v1/auth", container.resolve(AuthController).routes());
+app.use("/api/v1/users", container.resolve(UserController).routes());
 app.use(ErrorHandler.handle);
 
 const start = async (): Promise<void> => {

@@ -12,8 +12,8 @@ export default class UserRepository {
         return await User.findAll();
     }
 
-    async findByEmail(email: string): Promise<User[]> {
-        return await User.findAll({
+    async findByEmail(email: string): Promise<User> {
+        return await User.findOne({
             where: {
                 email: email
             }

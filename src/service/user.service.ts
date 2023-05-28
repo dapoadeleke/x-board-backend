@@ -3,6 +3,7 @@ import UserRepository from "../repository/user.repository";
 import UserConverter from "../converter/user.converter";
 import {User} from "../model/user.model";
 import Security from "../utils/security";
+import {UserRequest} from "../dto/user.request";
 
 @autoInjectable()
 export default class UserService {
@@ -17,9 +18,9 @@ export default class UserService {
         this.security = security;
     }
 
-    async create(newUserDto: NewUserDto): Promise<UserDto> {
-        const usersByEmail = await this.repository.findByEmail(newUserDto.email);
-        if (usersByEmail.length > 0) {
+    async create(newUserDto: UserRequest): Promise<UserDto> {
+        const userByEmail = await this.repository.findByEmail(newUserDto.email);
+        if (userByEmail) {
             throw new Error("Email address has been previously registered");
         }
         const passwordHash = await this.security.hashPassword("Password123");

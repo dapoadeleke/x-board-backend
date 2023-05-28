@@ -30,7 +30,7 @@ let UserRepository = class UserRepository {
     }
     findByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield user_model_1.User.findAll({
+            return yield user_model_1.User.findOne({
                 where: {
                     email: email
                 }

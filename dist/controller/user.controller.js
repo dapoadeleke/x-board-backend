@@ -26,6 +26,8 @@ const express_1 = require("express");
 const user_service_1 = __importDefault(require("../service/user.service"));
 const user_converter_1 = __importDefault(require("../converter/user.converter"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const user_request_1 = require("../dto/user.request");
+const class_validator_1 = require("class-validator");
 let UserController = class UserController {
     constructor(service, converter) {
         this.service = service;
@@ -35,12 +37,15 @@ let UserController = class UserController {
     }
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let newUser = req.body;
-            if (!newUser.name || !newUser.email) {
-                res.status(400).json({ error: "All fields are mandatory" });
+            let userRequest = new user_request_1.UserRequest();
+            userRequest.name = req.body.name;
+            userRequest.email = req.body.email;
+            const errors = yield (0, class_validator_1.validate)(userRequest);
+            if (errors.length > 0) {
+                res.status(400).json({ error: errors });
                 return;
             }
-            const user = yield this.service.create(newUser);
+            const user = yield this.service.create(userRequest);
             res.status(201).json(user);
         });
     }
