@@ -1,22 +1,28 @@
 import {autoInjectable} from 'tsyringe';
 import {Router} from 'express';
 import UserService from '../service/user.service';
+import {NewUserDto} from "../dto/new-user.dto";
+import {validate} from "class-validator";
+import UserConverter from "../converter/user.converter";
 
 @autoInjectable()
 export default class UserController {
 
     service: UserService;
+    converter: UserConverter;
     router: Router;
 
-    constructor(service: UserService) {
+    constructor(service: UserService, converter: UserConverter) {
         this.service = service;
+        this.converter = converter;
         this.router = new Router();
     }
 
     async createUser(req, res) {
-        const newUser: NewUserDto = req.body;
-        if (!newUser.firstName || !newUser.lastName || !newUser.email) {
-            res.status(400).json({ error: "All fields are mandatory" });
+        let newUser: NewUserDto = this.converter.convertRequest(req);
+        const errors = await validate(newUser);
+        if (errors.length > 0) {
+            res.status(400).json({ error: errors });
             return;
         }
         const user = await this.service.create(newUser);

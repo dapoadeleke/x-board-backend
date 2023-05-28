@@ -1,4 +1,5 @@
 import {User} from "../model/user.model";
+import {NewUserDto} from "../dto/new-user.dto";
 
 export default class UserConverter {
 
@@ -17,6 +18,14 @@ export default class UserConverter {
         model.setDataValue("lastName", dto.lastName);
         model.setDataValue("email", dto.email);
         return model;
+    }
+
+    convertRequest(req: any): NewUserDto {
+        const dto: NewUserDto = new NewUserDto();
+        dto.firstName = req.firstName;
+        dto.lastName = req.lastName;
+        dto.email = req.email;
+        return dto;
     }
 
 }

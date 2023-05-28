@@ -1,6 +1,7 @@
 import {autoInjectable} from "tsyringe";
 import UserRepository from "../repository/user.repository";
 import UserConverter from "../converter/user.converter";
+import {NewUserDto} from "../dto/new-user.dto";
 
 @autoInjectable()
 export default class UserService {
