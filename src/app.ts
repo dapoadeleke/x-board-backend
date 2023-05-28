@@ -8,7 +8,9 @@ import UserController from "./controller/user.controller";
 import {container} from "tsyringe";
 import ErrorHandler from "./middleware/error.handler";
 import AuthController from "./controller/auth.controller";
+import BoardController from "./controller/board.controller";
 import * as dotenv from "dotenv";
+import AuthorizationHandler from "./middleware/authorization.handler";
 
 
 const app = express();
@@ -33,6 +35,7 @@ wss.on("connection", (client: any) => {
 app.use(express.json());
 app.use("/api/v1/auth", container.resolve(AuthController).routes());
 app.use("/api/v1/users", container.resolve(UserController).routes());
+app.use("/api/v1/boards", container.resolve(BoardController).routes());
 app.use(ErrorHandler.handle);
 
 const start = async (): Promise<void> => {

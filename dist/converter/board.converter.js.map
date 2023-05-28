@@ -1,0 +1,1 @@
+{"version":3,"file":"board.converter.js","sourceRoot":"","sources":["../../src/converter/board.converter.ts"],"names":[],"mappings":";;AAEA,MAAqB,cAAc;IAE/B,iBAAiB,CAAC,KAAY;QAC1B,OAAO;YACH,EAAE,EAAE,KAAK,CAAC,YAAY,CAAC,IAAI,CAAC;YAC5B,KAAK,EAAE,KAAK,CAAC,YAAY,CAAC,OAAO,CAAC;SACrC,CAAC;IACN,CAAC;CAEJ;AATD,iCASC"}

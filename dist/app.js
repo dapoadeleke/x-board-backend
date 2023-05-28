@@ -44,6 +44,7 @@ const user_controller_1 = __importDefault(require("./controller/user.controller"
 const tsyringe_1 = require("tsyringe");
 const error_handler_1 = __importDefault(require("./middleware/error.handler"));
 const auth_controller_1 = __importDefault(require("./controller/auth.controller"));
+const board_controller_1 = __importDefault(require("./controller/board.controller"));
 const dotenv = __importStar(require("dotenv"));
 const app = (0, express_1.default)();
 dotenv.config();
@@ -65,6 +66,7 @@ wss.on("connection", (client) => {
 app.use(express_1.default.json());
 app.use("/api/v1/auth", tsyringe_1.container.resolve(auth_controller_1.default).routes());
 app.use("/api/v1/users", tsyringe_1.container.resolve(user_controller_1.default).routes());
+app.use("/api/v1/boards", tsyringe_1.container.resolve(board_controller_1.default).routes());
 app.use(error_handler_1.default.handle);
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
