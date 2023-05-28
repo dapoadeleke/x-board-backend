@@ -24,7 +24,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tsyringe_1 = require("tsyringe");
 const express_1 = require("express");
 const user_service_1 = __importDefault(require("../service/user.service"));
-const class_validator_1 = require("class-validator");
 const user_converter_1 = __importDefault(require("../converter/user.converter"));
 let UserController = class UserController {
     constructor(service, converter) {
@@ -34,22 +33,22 @@ let UserController = class UserController {
     }
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let newUser = this.converter.convertRequest(req);
-            const errors = yield (0, class_validator_1.validate)(newUser);
-            if (errors.length > 0) {
-                res.status(400).json({ error: errors });
-                return;
-            }
+            let newUser = req; //this.converter.convertRequest(req);
+            // const errors = await validate(newUser);
+            // if (errors.length > 0) {
+            //     res.status(400).json({ error: errors });
+            //     return;
+            // }
             // validate(newUser).then(errors => {
             //     if (errors.length > 0) {
             //         res.status(400).json({ error: errors });
             //         return;
             //     }
             // });
-            // if (!newUser.firstName || !newUser.lastName || !newUser.email) {
-            //     res.status(400).json({ error: "All fields are mandatory" });
-            //     return;
-            // }
+            if (!newUser.firstName || !newUser.lastName || !newUser.email) {
+                res.status(400).json({ error: "All fields are mandatory" });
+                return;
+            }
             const user = yield this.service.create(newUser);
             res.status(201).json(user);
         });

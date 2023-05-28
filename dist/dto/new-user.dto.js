@@ -14,7 +14,7 @@ const class_validator_1 = require("class-validator");
 class NewUserDto {
 }
 __decorate([
-    (0, class_validator_1.Length)(23, 60),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], NewUserDto.prototype, "firstName", void 0);
 __decorate([
