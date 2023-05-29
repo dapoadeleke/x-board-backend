@@ -31,21 +31,6 @@ let UserService = class UserService {
         this.converter = converter;
         this.security = security;
     }
-    create(newUserDto) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const userByEmail = yield this.repository.findByEmail(newUserDto.email);
-            if (userByEmail) {
-                throw new Error("Email address has been previously registered");
-            }
-            const passwordHash = yield this.security.hashPassword("Password123");
-            const user = yield this.repository.create({
-                name: newUserDto.name,
-                email: newUserDto.email,
-                passwordHash: passwordHash
-            });
-            return this.converter.convertToDto(user);
-        });
-    }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
             const users = yield this.repository.findAll();

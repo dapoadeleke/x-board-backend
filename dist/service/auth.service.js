@@ -45,6 +45,21 @@ let AuthService = class AuthService {
             };
         });
     }
+    register(newUserDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userByEmail = yield this.userRepository.findByEmail(newUserDto.email);
+            if (userByEmail) {
+                throw new Error("Email address has been previously registered");
+            }
+            const passwordHash = yield this.security.hashPassword("Password123");
+            const user = yield this.userRepository.create({
+                name: newUserDto.name,
+                email: newUserDto.email,
+                passwordHash: passwordHash
+            });
+            return this.userConverter.convertToDto(user);
+        });
+    }
 };
 AuthService = __decorate([
     (0, tsyringe_1.autoInjectable)(),

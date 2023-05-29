@@ -3,6 +3,10 @@ import UserRepository from "../repository/user.repository";
 import {autoInjectable} from "tsyringe";
 import Security from "../utils/security";
 import UserConverter from "../converter/user.converter";
+import {BoardRequest} from "../dto/board.request";
+import {Board} from "../model/board.model";
+import {UserRequest} from "../dto/user.request";
+import {User} from "../model/user.model";
 
 @autoInjectable()
 export default class AuthService {
@@ -28,6 +32,20 @@ export default class AuthService {
             email: userDto.email,
             token: this.security.generateAccessToken(userDto)
         };
+    }
+
+    async register(newUserDto: UserRequest): Promise<UserDto> {
+        const userByEmail = await this.userRepository.findByEmail(newUserDto.email);
+        if (userByEmail) {
+            throw new Error("Email address has been previously registered");
+        }
+        const passwordHash = await this.security.hashPassword("Password123");
+        const user: User = await this.userRepository.create({
+            name: newUserDto.name,
+            email: newUserDto.email,
+            passwordHash: passwordHash
+        });
+        return this.userConverter.convertToDto(user);
     }
 
 }

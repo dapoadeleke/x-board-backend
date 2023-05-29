@@ -21,19 +21,6 @@ export default class UserController {
         this.router = new Router();
     }
 
-    async createUser(req, res) {
-        let userRequest: UserRequest = new UserRequest();
-        userRequest.name = req.body.name;
-        userRequest.email = req.body.email;
-        const errors = await validate(userRequest);
-        if (errors.length > 0) {
-            res.status(400).json({error: errors})
-            return
-        }
-        const user = await this.service.create(userRequest);
-        res.status(201).json(user);
-    }
-
     async getUsers(req, res) {
         const users = await this.service.findAll();
         res.json(users);
@@ -41,7 +28,6 @@ export default class UserController {
 
     routes() {
         this.router.get("/", asyncHandler((req, res) => this.getUsers(req, res)));
-        this.router.post("/", asyncHandler((req, res) => this.createUser(req, res)));
         return this.router;
     }
 

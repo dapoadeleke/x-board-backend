@@ -10,7 +10,7 @@ import ErrorHandler from "./middleware/error.handler";
 import AuthController from "./controller/auth.controller";
 import BoardController from "./controller/board.controller";
 import * as dotenv from "dotenv";
-import AuthorizationHandler from "./middleware/authorization.handler";
+import cors from "cors";
 
 
 const app = express();
@@ -32,6 +32,7 @@ wss.on("connection", (client: any) => {
     wss.send("something");
 });
 
+app.use(cors());
 app.use(express.json());
 app.use("/api/v1/auth", container.resolve(AuthController).routes());
 app.use("/api/v1/users", container.resolve(UserController).routes());

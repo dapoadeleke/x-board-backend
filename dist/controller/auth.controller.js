@@ -22,11 +22,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const login_request_1 = require("../dto/login-request");
 const class_validator_1 = require("class-validator");
 const auth_service_1 = __importDefault(require("../service/auth.service"));
 const tsyringe_1 = require("tsyringe");
+const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const user_request_1 = require("../dto/user.request");
 let AuthController = class AuthController {
     constructor(service) {
         this.service = service;
@@ -47,8 +48,23 @@ let AuthController = class AuthController {
             res.status(200).json(loginResponse);
         });
     }
+    register(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let userRequest = new user_request_1.UserRequest();
+            userRequest.name = req.body.name;
+            userRequest.email = req.body.email;
+            const errors = yield (0, class_validator_1.validate)(userRequest);
+            if (errors.length > 0) {
+                res.status(400).json({ error: errors });
+                return;
+            }
+            const user = yield this.service.register(userRequest);
+            res.status(201).json(user);
+        });
+    }
     routes() {
         this.router.post("/login", (0, express_async_handler_1.default)((req, res) => this.login(req, res)));
+        this.router.post("/register", (0, express_async_handler_1.default)((req, res) => this.register(req, res)));
         return this.router;
     }
 };

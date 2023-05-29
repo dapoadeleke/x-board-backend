@@ -26,28 +26,12 @@ const express_1 = require("express");
 const user_service_1 = __importDefault(require("../service/user.service"));
 const user_converter_1 = __importDefault(require("../converter/user.converter"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const user_request_1 = require("../dto/user.request");
-const class_validator_1 = require("class-validator");
 let UserController = class UserController {
     constructor(service, converter) {
         this.service = service;
         this.converter = converter;
         // @ts-ignore
         this.router = new express_1.Router();
-    }
-    createUser(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let userRequest = new user_request_1.UserRequest();
-            userRequest.name = req.body.name;
-            userRequest.email = req.body.email;
-            const errors = yield (0, class_validator_1.validate)(userRequest);
-            if (errors.length > 0) {
-                res.status(400).json({ error: errors });
-                return;
-            }
-            const user = yield this.service.create(userRequest);
-            res.status(201).json(user);
-        });
     }
     getUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -57,7 +41,6 @@ let UserController = class UserController {
     }
     routes() {
         this.router.get("/", (0, express_async_handler_1.default)((req, res) => this.getUsers(req, res)));
-        this.router.post("/", (0, express_async_handler_1.default)((req, res) => this.createUser(req, res)));
         return this.router;
     }
 };

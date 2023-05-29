@@ -46,6 +46,7 @@ const error_handler_1 = __importDefault(require("./middleware/error.handler"));
 const auth_controller_1 = __importDefault(require("./controller/auth.controller"));
 const board_controller_1 = __importDefault(require("./controller/board.controller"));
 const dotenv = __importStar(require("dotenv"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 dotenv.config();
 const port = 5001;
@@ -63,6 +64,7 @@ wss.on("connection", (client) => {
     });
     wss.send("something");
 });
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use("/api/v1/auth", tsyringe_1.container.resolve(auth_controller_1.default).routes());
 app.use("/api/v1/users", tsyringe_1.container.resolve(user_controller_1.default).routes());
