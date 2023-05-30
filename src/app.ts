@@ -11,6 +11,7 @@ import AuthController from "./controller/auth.controller";
 import BoardController from "./controller/board.controller";
 import * as dotenv from "dotenv";
 import cors from "cors";
+import CardController from "./controller/card.controller";
 
 
 const app = express();
@@ -19,17 +20,11 @@ const port = 5001;
 const httpServer = new http.Server(app);
 const wss = new Server(httpServer, {cors: {origin: '*'}});
 
+
 wss.on("connection", (client: any) => {
-    console.log('a user just connected')
+    console.log('a user just connected');
+    container.resolve(CardController).saveCard(client, wss);
     client.on("error", console.error);
-    client.on("message", (data) => {
-        console.log('received: %s', data);
-    });
-    client.on("something", (data) =>{
-        console.log('received: %s', data);
-        wss.emit('something-else', data);
-    })
-    wss.send("something");
 });
 
 app.use(cors());

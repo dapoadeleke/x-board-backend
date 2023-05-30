@@ -1,6 +1,5 @@
 import {Board} from "../model/board.model";
 import {autoInjectable} from "tsyringe";
-import {User} from "../model/user.model";
 
 @autoInjectable()
 export default class BoardRepository {

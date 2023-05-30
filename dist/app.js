@@ -47,6 +47,7 @@ const auth_controller_1 = __importDefault(require("./controller/auth.controller"
 const board_controller_1 = __importDefault(require("./controller/board.controller"));
 const dotenv = __importStar(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
+const card_controller_1 = __importDefault(require("./controller/card.controller"));
 const app = (0, express_1.default)();
 dotenv.config();
 const port = 5001;
@@ -54,15 +55,16 @@ const httpServer = new http_1.default.Server(app);
 const wss = new socket_io_1.Server(httpServer, { cors: { origin: '*' } });
 wss.on("connection", (client) => {
     console.log('a user just connected');
-    client.on("error", console.error);
-    client.on("message", (data) => {
-        console.log('received: %s', data);
-    });
-    client.on("something", (data) => {
-        console.log('received: %s', data);
-        wss.emit('something-else', data);
-    });
-    wss.send("something");
+    tsyringe_1.container.resolve(card_controller_1.default).saveCard(client, wss);
+    // client.on("error", console.error);
+    // client.on("message", (data) => {
+    //     console.log('received: %s', data);
+    // });
+    // client.on("something", (data) =>{
+    //     console.log('received: %s', data);
+    //     wss.emit('something-else', data);
+    // })
+    // wss.send("something");
 });
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
