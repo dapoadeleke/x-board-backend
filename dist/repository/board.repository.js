@@ -31,6 +31,16 @@ let BoardRepository = class BoardRepository {
             });
         });
     }
+    findBySlug(slug) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield board_model_1.Board.findOne({
+                where: {
+                    slug: slug
+                },
+                include: card_model_1.Card
+            });
+        });
+    }
     findAllByUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield board_model_1.Board.findAll({

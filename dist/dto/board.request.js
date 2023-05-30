@@ -17,5 +17,9 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], BoardRequest.prototype, "title", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], BoardRequest.prototype, "access", void 0);
 exports.BoardRequest = BoardRequest;
 //# sourceMappingURL=board.request.js.map

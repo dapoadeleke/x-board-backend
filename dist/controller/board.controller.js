@@ -38,6 +38,8 @@ let BoardController = class BoardController {
         return __awaiter(this, void 0, void 0, function* () {
             let boardRequest = new board_request_1.BoardRequest();
             boardRequest.title = req.body.title;
+            boardRequest.access = req.body.access;
+            boardRequest.description = req.body.description;
             const errors = yield (0, class_validator_1.validate)(boardRequest);
             if (errors.length > 0) {
                 res.status(400).json({ error: errors });
@@ -71,10 +73,22 @@ let BoardController = class BoardController {
             res.status(200).json(board);
         });
     }
+    getBySlug(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const slug = req.params.slug;
+            if (!slug) {
+                res.status(400).json({ error: "Slug is required" });
+                return;
+            }
+            const board = yield this.service.findBySlug(slug);
+            res.status(200).json(board);
+        });
+    }
     routes() {
         this.router.use(authorization_handler_1.default.handle);
-        this.router.post("/", (0, express_async_handler_1.default)((req, res) => this.create(req, res)));
+        this.router.post("", (0, express_async_handler_1.default)((req, res) => this.create(req, res)));
         this.router.get("/:boardId", (0, express_async_handler_1.default)((req, res) => this.get(req, res)));
+        this.router.get("/slug/:slug", (0, express_async_handler_1.default)((req, res) => this.getBySlug(req, res)));
         this.router.get("/users/:userId", (0, express_async_handler_1.default)((req, res) => this.getAllByUser(req, res)));
         return this.router;
     }

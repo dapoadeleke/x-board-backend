@@ -12,6 +12,7 @@ import BoardController from "./controller/board.controller";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import CardController from "./controller/card.controller";
+import CurrentUserController from "./controller/current-user.controller";
 
 
 const app = express();
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use("/api/v1/auth", container.resolve(AuthController).routes());
 app.use("/api/v1/users", container.resolve(UserController).routes());
 app.use("/api/v1/boards", container.resolve(BoardController).routes());
+app.use("/api/v1/internal/current-user", container.resolve(CurrentUserController).routes);
 app.use(ErrorHandler.handle);
 
 const start = async (): Promise<void> => {

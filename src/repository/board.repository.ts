@@ -15,6 +15,15 @@ export default class BoardRepository {
         });
     }
 
+    async findBySlug(slug: string): Promise<Board> {
+        return await Board.findOne( {
+            where: {
+                slug: slug
+            },
+            include: Card
+        });
+    }
+
     async findAllByUser(userId: number): Promise<Board[]> {
         return await Board.findAll({
             where: {

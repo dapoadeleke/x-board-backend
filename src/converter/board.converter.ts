@@ -14,7 +14,9 @@ export default class BoardConverter {
     convertToResponse(board: Board): BoardResponse {
         return {
             id: board.getDataValue("id"),
-            title: board.getDataValue("title")
+            slug: board.getDataValue("slug"),
+            title: board.getDataValue("title"),
+            access: board.getDataValue("access")
         };
     }
 
@@ -22,6 +24,7 @@ export default class BoardConverter {
         return {
             id: board.getDataValue("id"),
             title: board.getDataValue("title"),
+            access: board.getDataValue("access"),
             cards: board.getDataValue("Cards").map(c => this.cardConverter.toResource(c))
         };
     }

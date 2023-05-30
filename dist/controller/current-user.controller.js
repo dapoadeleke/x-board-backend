@@ -12,32 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const authorization_handler_1 = __importDefault(require("../middleware/authorization.handler"));
+const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const express_1 = require("express");
 const tsyringe_1 = require("tsyringe");
-const card_converter_1 = __importDefault(require("./card.converter"));
-let BoardConverter = class BoardConverter {
-    constructor(cardConverter) {
-        this.cardConverter = cardConverter;
+let CurrentUserController = class CurrentUserController {
+    constructor() {
+        // @ts-ignore
+        this.router = new express_1.Router();
     }
-    convertToResponse(board) {
-        return {
-            id: board.getDataValue("id"),
-            slug: board.getDataValue("slug"),
-            title: board.getDataValue("title"),
-            access: board.getDataValue("access")
-        };
+    currentUser(req, res) {
+        console.log('current user');
+        console.log(req);
     }
-    convertToDetailsResponse(board) {
-        return {
-            id: board.getDataValue("id"),
-            title: board.getDataValue("title"),
-            access: board.getDataValue("access"),
-            cards: board.getDataValue("Cards").map(c => this.cardConverter.toResource(c))
-        };
+    routes() {
+        this.router.use(authorization_handler_1.default.handle);
+        this.router.post("", (0, express_async_handler_1.default)((req, res) => this.currentUser(req, res)));
+        return this.router;
     }
 };
-BoardConverter = __decorate([
+CurrentUserController = __decorate([
     (0, tsyringe_1.autoInjectable)(),
-    __metadata("design:paramtypes", [card_converter_1.default])
-], BoardConverter);
-exports.default = BoardConverter;
-//# sourceMappingURL=board.converter.js.map
+    __metadata("design:paramtypes", [])
+], CurrentUserController);
+exports.default = CurrentUserController;
+//# sourceMappingURL=current-user.controller.js.map

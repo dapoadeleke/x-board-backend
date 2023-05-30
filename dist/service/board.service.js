@@ -31,14 +31,23 @@ let BoardService = class BoardService {
     }
     create(request, initiator) {
         return __awaiter(this, void 0, void 0, function* () {
-            const board = yield this.repository.create({ title: request.title, UserId: initiator.id });
+            const slug = this.slugify(request.title);
+            const board = yield this.repository.create({ slug: slug, title: request.title, access: request.access, description: request.description, UserId: initiator.id });
             return this.converter.convertToResponse(board);
         });
     }
     findOne(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const board = yield this.repository.findById(id);
-            console.log(board);
+            if (!board) {
+                throw new Error("Board not found");
+            }
+            return this.converter.convertToDetailsResponse(board);
+        });
+    }
+    findBySlug(slug) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const board = yield this.repository.findBySlug(slug);
             if (!board) {
                 throw new Error("Board not found");
             }
@@ -50,6 +59,9 @@ let BoardService = class BoardService {
             const boards = yield this.repository.findAllByUser(userId);
             return boards.map(b => this.converter.convertToResponse(b));
         });
+    }
+    slugify(str) {
+        return str.toLowerCase().split(" ").join("-").concat("-").concat(Date.now().toString());
     }
 };
 BoardService = __decorate([
