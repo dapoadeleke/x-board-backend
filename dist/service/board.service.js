@@ -38,10 +38,11 @@ let BoardService = class BoardService {
     findOne(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const board = yield this.repository.findById(id);
+            console.log(board);
             if (!board) {
                 throw new Error("Board not found");
             }
-            return this.converter.convertToResponse(board);
+            return this.converter.convertToDetailsResponse(board);
         });
     }
     findAllByUser(userId) {

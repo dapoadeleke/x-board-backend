@@ -20,12 +20,12 @@ export default class BoardService {
         return this.converter.convertToResponse(board);
     }
 
-    async findOne(id: number): Promise<BoardResponse> {
+    async findOne(id: number): Promise<BoardDetailsResponse> {
         const board: Board = await this.repository.findById(id);
         if (!board) {
             throw new Error("Board not found");
         }
-        return this.converter.convertToResponse(board);
+        return this.converter.convertToDetailsResponse(board);
     }
 
     async findAllByUser(userId: number): Promise<BoardResponse[]> {

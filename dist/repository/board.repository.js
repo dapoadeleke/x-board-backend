@@ -17,6 +17,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const board_model_1 = require("../model/board.model");
 const tsyringe_1 = require("tsyringe");
+const card_model_1 = require("../model/card.model");
 let BoardRepository = class BoardRepository {
     create(board) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -25,7 +26,9 @@ let BoardRepository = class BoardRepository {
     }
     findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield board_model_1.Board.findByPk(id);
+            return yield board_model_1.Board.findByPk(id, {
+                include: card_model_1.Card
+            });
         });
     }
     findAllByUser(userId) {

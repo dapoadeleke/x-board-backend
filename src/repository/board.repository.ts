@@ -1,5 +1,6 @@
 import {Board} from "../model/board.model";
 import {autoInjectable} from "tsyringe";
+import {Card} from "../model/card.model";
 
 @autoInjectable()
 export default class BoardRepository {
@@ -9,7 +10,9 @@ export default class BoardRepository {
     }
 
     async findById(id: number): Promise<Board> {
-        return await Board.findByPk(id);
+        return await Board.findByPk(id, {
+            include: Card
+        });
     }
 
     async findAllByUser(userId: number): Promise<Board[]> {
