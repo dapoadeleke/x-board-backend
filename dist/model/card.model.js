@@ -12,31 +12,31 @@ class Card extends sequelize_1.Model {
 exports.Card = Card;
 Card.init({
     startX: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
     startY: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
     x: {
-        type: sequelize_1.DataTypes.NUMBER,
-        allowNull: false
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: true
     },
     y: {
-        type: sequelize_1.DataTypes.NUMBER,
-        allowNull: false
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: true
     },
     width: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
     height: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
     votes: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
     text: {
@@ -56,7 +56,7 @@ Card.init({
         allowNull: false
     },
     index: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
 }, {

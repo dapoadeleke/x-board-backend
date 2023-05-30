@@ -26,7 +26,7 @@ export default class CardConverter {
     toModel(resource: CardResource): any {
         return {
             id: resource.id,
-            boardId: resource.boardId,
+            BoardId: resource.boardId,
             startX: resource.startX,
             startY: resource.startY,
             x: resource.x,

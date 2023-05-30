@@ -56,15 +56,7 @@ const wss = new socket_io_1.Server(httpServer, { cors: { origin: '*' } });
 wss.on("connection", (client) => {
     console.log('a user just connected');
     tsyringe_1.container.resolve(card_controller_1.default).saveCard(client, wss);
-    // client.on("error", console.error);
-    // client.on("message", (data) => {
-    //     console.log('received: %s', data);
-    // });
-    // client.on("something", (data) =>{
-    //     console.log('received: %s', data);
-    //     wss.emit('something-else', data);
-    // })
-    // wss.send("something");
+    client.on("error", console.error);
 });
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());

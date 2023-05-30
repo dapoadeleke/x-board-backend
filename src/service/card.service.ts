@@ -16,6 +16,8 @@ export default class CardService {
 
     async create(request: CardResource): Promise<CardResource> {
         const req = this.converter.toModel(request);
+        delete req.id;
+        console.log('Req: ', req);
         const card: Card = await this.repository.create(req)
         return this.converter.toResource(card);
     }

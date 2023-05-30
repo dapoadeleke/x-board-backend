@@ -32,6 +32,8 @@ let CardService = class CardService {
     create(request) {
         return __awaiter(this, void 0, void 0, function* () {
             const req = this.converter.toModel(request);
+            delete req.id;
+            console.log('Req: ', req);
             const card = yield this.repository.create(req);
             return this.converter.toResource(card);
         });

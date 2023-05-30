@@ -6,31 +6,31 @@ export class Card extends Model {}
 
 Card.init({
     startX: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     startY: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     x: {
-        type: DataTypes.NUMBER,
-        allowNull: false
+        type: DataTypes.INTEGER,
+        allowNull: true
     },
     y: {
-        type: DataTypes.NUMBER,
-        allowNull: false
+        type: DataTypes.INTEGER,
+        allowNull: true
     },
     width: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     height: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     votes: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     text: {
@@ -50,13 +50,13 @@ Card.init({
         allowNull: false
     },
     index: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
 }, {
     sequelize,
     modelName: 'Card'
-})
+});
 
 Card.belongsTo(Board);
 Board.hasMany(Card);

@@ -29,7 +29,7 @@ let CardConverter = class CardConverter {
     toModel(resource) {
         return {
             id: resource.id,
-            boardId: resource.boardId,
+            BoardId: resource.boardId,
             startX: resource.startX,
             startY: resource.startY,
             x: resource.x,
