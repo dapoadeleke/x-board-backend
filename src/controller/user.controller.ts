@@ -3,8 +3,7 @@ import {Router} from 'express';
 import UserService from '../service/user.service';
 import UserConverter from "../converter/user.converter";
 import asyncHandler from 'express-async-handler';
-import {UserRequest} from "../dto/user.request";
-import {validate} from "class-validator";
+import AuthorizationHandler from "../middleware/authorization.handler";
 
 
 @autoInjectable()
@@ -27,6 +26,7 @@ export default class UserController {
     }
 
     routes() {
+        this.router.use(AuthorizationHandler.handle);
         this.router.get("/", asyncHandler((req, res) => this.getUsers(req, res)));
         return this.router;
     }

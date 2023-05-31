@@ -13,14 +13,15 @@ export default class CurrentUserController {
         this.router = new Router();
     }
 
-    currentUser(req, res): void {
+    async currentUser(req, res) {
         console.log('current user');
         console.log(req);
+        res.json(req.user);
     }
 
     routes() {
         this.router.use(AuthorizationHandler.handle);
-        this.router.post("", asyncHandler((req, res) => this.currentUser(req, res)));
+        this.router.get("", asyncHandler((req, res) => this.currentUser(req, res)));
         return this.router;
     }
 

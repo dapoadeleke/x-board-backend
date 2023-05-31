@@ -28,8 +28,7 @@ export default class BoardController {
             res.status(400).json({error: errors})
             return;
         }
-        // TODO: fix authorization middleware
-        const initiator: UserDto = {id: 1, name: "Dapo", email: "dapoadeleke@gmail.com"} //req.user;
+        const initiator: UserDto = req.user;
         const boardResponse: BoardResponse = await this.service.create(boardRequest, initiator);
         res.status(200).json(boardResponse);
     }

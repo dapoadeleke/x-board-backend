@@ -26,6 +26,7 @@ const express_1 = require("express");
 const user_service_1 = __importDefault(require("../service/user.service"));
 const user_converter_1 = __importDefault(require("../converter/user.converter"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const authorization_handler_1 = __importDefault(require("../middleware/authorization.handler"));
 let UserController = class UserController {
     constructor(service, converter) {
         this.service = service;
@@ -40,6 +41,7 @@ let UserController = class UserController {
         });
     }
     routes() {
+        this.router.use(authorization_handler_1.default.handle);
         this.router.get("/", (0, express_async_handler_1.default)((req, res) => this.getUsers(req, res)));
         return this.router;
     }

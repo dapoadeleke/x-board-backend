@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken"
-import {NextFunction, Response} from "express";
 
 export default class AuthorizationHandler {
 
-    public static handle(err, req, res: Response, next: NextFunction): void {
+    public static handle(req, res, next): void {
         const header: string = req.headers.Authorization || req.headers.authorization;
         if (header && header.startsWith("Bearer")) {
             const token = header.split(" ")[1];
@@ -19,6 +18,9 @@ export default class AuthorizationHandler {
                 res.status(401);
                 throw new Error("Token is missing");
             }
+        } else {
+            res.status(401);
+            throw new Error("Unauthorized");
         }
     }
 

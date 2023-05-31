@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class AuthorizationHandler {
-    static handle(err, req, res, next) {
+    static handle(req, res, next) {
         const header = req.headers.Authorization || req.headers.authorization;
         if (header && header.startsWith("Bearer")) {
             const token = header.split(" ")[1];
@@ -21,6 +21,10 @@ class AuthorizationHandler {
                 res.status(401);
                 throw new Error("Token is missing");
             }
+        }
+        else {
+            res.status(401);
+            throw new Error("Unauthorized");
         }
     }
 }

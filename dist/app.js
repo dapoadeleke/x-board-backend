@@ -64,7 +64,7 @@ app.use(express_1.default.json());
 app.use("/api/v1/auth", tsyringe_1.container.resolve(auth_controller_1.default).routes());
 app.use("/api/v1/users", tsyringe_1.container.resolve(user_controller_1.default).routes());
 app.use("/api/v1/boards", tsyringe_1.container.resolve(board_controller_1.default).routes());
-app.use("/api/v1/internal/current-user", tsyringe_1.container.resolve(current_user_controller_1.default).routes);
+app.use("/api/v1/current-user", tsyringe_1.container.resolve(current_user_controller_1.default).routes());
 app.use(error_handler_1.default.handle);
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

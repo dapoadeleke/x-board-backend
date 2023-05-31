@@ -33,7 +33,7 @@ app.use(express.json());
 app.use("/api/v1/auth", container.resolve(AuthController).routes());
 app.use("/api/v1/users", container.resolve(UserController).routes());
 app.use("/api/v1/boards", container.resolve(BoardController).routes());
-app.use("/api/v1/internal/current-user", container.resolve(CurrentUserController).routes);
+app.use("/api/v1/current-user", container.resolve(CurrentUserController).routes());
 app.use(ErrorHandler.handle);
 
 const start = async (): Promise<void> => {
