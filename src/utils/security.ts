@@ -20,7 +20,7 @@ export default class Security {
                     email: user.email
                 }
             },
-            process.env.ACCESS_TOKEN_SECRET,
+            process.env.ACCESS_TOKEN_SECRET || '$2a$12$oCiZ.T9SIj0VfTnLxB/9s.N1laHdDNKL9Fs.8l1bmJbPukhd37yOG',  // TODO: Remove this later
             {expiresIn: "1d"}
         );
     }
