@@ -1,14 +1,17 @@
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
 export default class Security {
 
     async hashPassword(password: string): Promise<string> {
-        return await bcrypt.hash(password, 10);
+        // return await bcrypt.hash(password, 10);
+        const salt = bcrypt.genSaltSync(10);
+        return bcrypt.hashSync(password, salt);
     }
 
     async compare(password: string, hashPassword: string): Promise<boolean> {
-        return await bcrypt.compare(password, hashPassword);
+        // return await bcrypt.compare(password, hashPassword);
+        return bcrypt.compareSync(password, hashPassword);
     }
 
     generateAccessToken(user: UserDto): string {
@@ -20,7 +23,7 @@ export default class Security {
                     email: user.email
                 }
             },
-            process.env.ACCESS_TOKEN_SECRET || '$2a$12$oCiZ.T9SIj0VfTnLxB/9s.N1laHdDNKL9Fs.8l1bmJbPukhd37yOG',  // TODO: Remove this later
+            process.env.ACCESS_TOKEN_SECRET,
             {expiresIn: "1d"}
         );
     }

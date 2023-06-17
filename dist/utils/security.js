@@ -12,17 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class Security {
     hashPassword(password) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield bcrypt_1.default.hash(password, 10);
+            // return await bcrypt.hash(password, 10);
+            const salt = bcryptjs_1.default.genSaltSync(10);
+            return bcryptjs_1.default.hashSync(password, salt);
         });
     }
     compare(password, hashPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield bcrypt_1.default.compare(password, hashPassword);
+            // return await bcrypt.compare(password, hashPassword);
+            return bcryptjs_1.default.compareSync(password, hashPassword);
         });
     }
     generateAccessToken(user) {

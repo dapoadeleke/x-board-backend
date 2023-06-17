@@ -1,13 +1,8 @@
 import {Sequelize} from "sequelize";
 
-// const sequelize = new Sequelize('jdbc:sqlite:identifier.sqlite', {
-//     dialect: 'sqlite',
-//     logging: false
-// });
-
-const sequelize = new Sequelize("xboard","app", "Stroustrup@55", {
+const sequelize = new Sequelize(process.env.DATABASE_NAME,process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
     dialect: "mysql",
-    host: "127.0.0.1",
+    host: process.env.DATABASE_HOST,
     logging: false,
 });
 
@@ -18,5 +13,3 @@ sequelize.authenticate().then(() => {
 })
 
 export default sequelize;
-
-// jdbc:mysql://localhost:3306/xboard

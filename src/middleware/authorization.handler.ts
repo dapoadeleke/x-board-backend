@@ -6,8 +6,7 @@ export default class AuthorizationHandler {
         const header: string = req.headers.Authorization || req.headers.authorization;
         if (header && header.startsWith("Bearer")) {
             const token = header.split(" ")[1];
-            // TODO: Remove this key later
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || '$2a$12$oCiZ.T9SIj0VfTnLxB/9s.N1laHdDNKL9Fs.8l1bmJbPukhd37yOG', (error, decoded) => {
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
                 if (error) {
                     res.status(401);
                     throw new Error("Unauthorized");
