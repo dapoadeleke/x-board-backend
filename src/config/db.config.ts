@@ -1,8 +1,16 @@
 import {Sequelize} from "sequelize";
+import * as dotenv from "dotenv";
 
-const sequelize = new Sequelize(process.env.DATABASE_NAME,process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
+
+dotenv.config();
+const databaseName: string = process.env.DATABASE_NAME;
+const username: string = process.env.DATABASE_USERNAME;
+const password: string = process.env.DATABASE_PASSWORD;
+const host: string = process.env.DATABASE_HOST;
+
+const sequelize = new Sequelize(databaseName,username, password, {
     dialect: "mysql",
-    host: process.env.DATABASE_HOST,
+    host: host,
     logging: false,
 });
 

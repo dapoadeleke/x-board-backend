@@ -17,10 +17,9 @@ import CurrentUserController from "./controller/current-user.controller";
 
 const app = express();
 dotenv.config();
-const port = 5001;
+const port = process.env.PORT || 5001;
 const httpServer = new http.Server(app);
 const wss = new Server(httpServer, {cors: {origin: '*'}});
-
 
 wss.on("connection", (client: any) => {
     console.log('a user just connected');

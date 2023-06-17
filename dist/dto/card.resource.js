@@ -1,0 +1,1 @@
+//# sourceMappingURL=card.resource.js.map

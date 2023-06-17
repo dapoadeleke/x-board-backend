@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node dist/app.js",
-    "start_local": "tsc && node -r dotenv/config dist/app.js dotenv_config_path=.env.local",
+    "start_local": "tsc && node -r dotenv/config dist/app.js dotenv_config_path=.env.development",
     "dev": "tsc && node dist/app.js",
     "set": "tsc",
     "go": "node dist/app.js"
