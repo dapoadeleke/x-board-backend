@@ -17,53 +17,96 @@
 #
 #
 
-name: Deploy to EC2
+#name: Deploy to EC2
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#
+#env:
+#  AWS_REGION: us-east-1
+#  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#  EC2_INSTANCE_IP: ec2-54-210-128-125.compute-1.amazonaws.com
+#  DOCKER_COMPOSE_FILE: docker-compose.yaml
+#
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+
+#      - name: Install AWS CLI
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y awscli
+
+#      - name: Configure AWS credentials
+#        run: |
+#          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+#          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+#          aws configure set default.region $AWS_REGION
+
+#      - name: Set up SSH
+#        run: |
+#          mkdir -p $HOME/.ssh
+#          echo "$SSH_PRIVATE_KEY" > $HOME/.ssh/id_rsa
+#          chmod 400 $HOME/.ssh/id_rsa
+#          ssh-keyscan $EC2_INSTANCE_IP >> $HOME/.ssh/known_hosts
+
+#      - name: Copy Docker Compose file to EC2 instance
+#        run: |
+#          scp -i $HOME/.ssh/id_rsa $DOCKER_COMPOSE_FILE ubuntu@$EC2_INSTANCE_IP:/home/ubuntu/docker-compose.yml
+#
+#      - name: Connect to EC2 instance
+#        run: |
+#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@$EC2_INSTANCE_IP << 'EOF'
+#            cd /home/ubuntu &&
+#            ls -l
+#          EOF
+
+
+
+
+name: CI/CD counter app
 
 on:
   push:
-    branches:
-      - main
-
-env:
-  AWS_REGION: us-east-1
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  EC2_INSTANCE_IP: ec2-54-210-128-125.compute-1.amazonaws.com
-  DOCKER_COMPOSE_FILE: docker-compose.yaml
+    branches: [ main ]
 
 jobs:
-  deploy:
+  #First we will see the application build or not , then we will deploy in EC2
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Build the docker_compose
+#        run: docker-compose up -d --build
+#
+#      - name: Buid the application
+#        run: docker-compose exec -T counter_app npm run build
+
+  Deploy:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Deploy in EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY  }}
+          EC2_INSTANCE_IP: ec2-54-210-128-125.compute-1.amazonaws.com
 
-      - name: Install AWS CLI
         run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP} '
 
-      - name: Configure AWS credentials
-        run: |
-          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-          aws configure set default.region $AWS_REGION
-
-      - name: Set up SSH
-        run: |
-          mkdir -p $HOME/.ssh
-          echo "$SSH_PRIVATE_KEY" > $HOME/.ssh/id_rsa
-          chmod 400 $HOME/.ssh/id_rsa
-          ssh-keyscan $EC2_INSTANCE_IP >> $HOME/.ssh/known_hosts
-
-      - name: Copy Docker Compose file to EC2 instance
-        run: |
-          scp -i $HOME/.ssh/id_rsa $DOCKER_COMPOSE_FILE ubuntu@$EC2_INSTANCE_IP:/home/ubuntu/docker-compose.yml
-
-      - name: Connect to EC2 instance
-        run: |
-          ssh -i $HOME/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@$EC2_INSTANCE_IP << 'EOF'
-            cd /home/ubuntu
-            docker-compose up -d
-          EOF
+            #Now we have got the access of EC2 and we will start the deploy .
+            cd /home/ubuntu &&
+            ls -l
