@@ -103,12 +103,10 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           scp -r -o StrictHostKeyChecking=no -i private_key src .env.vault Dockerfile docker-compose.yaml package-lock.json package.json ubuntu@${EC2_INSTANCE_IP}:/home/ubuntu/x-board/backend/
 
-#      - name: Connect to EC2
-#        run: |
-#          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP} '
-#
-#            #Now we have got the access of EC2 and we will start the deploy .
-#            cd /home/ubuntu &&
-#            ls -l
+      - name: Connect to EC2
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP} '
+            cd /home/ubuntu/x-board/backend &&
+            docker-compose up -d
 #          '
