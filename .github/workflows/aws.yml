@@ -1,15 +1,62 @@
-name: Basic deploy
+#name: Basic deploy
+#on:
+#  push:
+#    branches: [ main ]
+#
+#jobs:
+#  EC2-Deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - id: deploy
+#        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
+#        with:
+#          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws_default_region: us-east-1
+#
+#
+#
+
+name: Deploy to EC2
+
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-east-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  EC2_INSTANCE_IP: ec2-54-210-128-125.compute-1.amazonaws.com
+  DOCKER_COMPOSE_FILE: docker-compose.yaml
 
 jobs:
-  EC2-Deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - id: deploy
-        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_default_region: us-east-1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      - name: Configure AWS credentials
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set default.region $AWS_REGION
+
+      - name: Copy Docker Compose file to EC2 instance
+        run: |
+          scp -i "$HOME/.ssh/id_rsa" $DOCKER_COMPOSE_FILE ubuntu@$EC2_INSTANCE_IP:/home/ubuntu/docker-compose.yml
+
+      - name: Connect to EC2 instance
+        run: |
+          ssh -i "$HOME/.ssh/id_rsa" ubuntu@$EC2_INSTANCE_IP << 'EOF'
+            cd /home/ubuntu
+            docker-compose up
+          EOF
