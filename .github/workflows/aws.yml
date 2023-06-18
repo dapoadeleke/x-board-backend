@@ -77,6 +77,10 @@ name: CI/CD counter app
 on:
   push:
     branches: [ main ]
+env:
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY  }}
+  EC2_INSTANCE_IP: ec2-54-210-128-125.compute-1.amazonaws.com
+  DOCKER_COMPOSE_FILE: docker-compose.yaml
 
 jobs:
   Deploy:
@@ -86,10 +90,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Deploy in EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY  }}
-          EC2_INSTANCE_IP: ec2-54-210-128-125.compute-1.amazonaws.com
 
+      - name: Copy Docker Compose file to EC2 instance
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          scp  $DOCKER_COMPOSE_FILE -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP}:/home/ubuntu/docker-compose.yml
+
+      - name: Connect to EC2
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP} '
