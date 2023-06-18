@@ -22,7 +22,7 @@ const httpServer = new http.Server(app);
 const wss = new Server(httpServer, {cors: {origin: '*'}});
 
 wss.on("connection", (client: any) => {
-    console.log('a user just connected');
+    console.log('a user just connected ', client);
     container.resolve(CardController).saveCard(client, wss);
     client.on("error", console.error);
 });
