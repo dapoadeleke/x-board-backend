@@ -6,7 +6,6 @@ on:
 env:
   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY  }}
   EC2_INSTANCE_IP: ec2-54-210-128-125.compute-1.amazonaws.com
-  DOCKER_COMPOSE_FILE: docker-compose.yaml
 
 jobs:
   Deploy:
@@ -35,5 +34,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP} '
             cd /home/ubuntu/x-board/backend &&
             sudo docker-compose up --build --remove-orphans -d &&
-            sudo docker system prune
+            sudo docker system prune -a
           '
