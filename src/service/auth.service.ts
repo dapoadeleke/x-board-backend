@@ -24,7 +24,7 @@ export default class AuthService {
     async login(request: LoginRequest): Promise<LoginResponse> {
         const user = await this.userRepository.findByEmail(request.email);
         if (!user || !await this.security.compare(request.password, user.getDataValue("passwordHash"))) {
-            throw new Error("Invalid email and/or password, thanks for washing too")
+            throw new Error("Invalid email and/or password.")
         }
         const userDto: UserDto = this.userConverter.convertToDto(user);
         return {
