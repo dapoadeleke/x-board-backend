@@ -54,6 +54,12 @@ jobs:
         run: |
           scp -i "$HOME/.ssh/id_rsa" $DOCKER_COMPOSE_FILE ubuntu@$EC2_INSTANCE_IP:/home/ubuntu/docker-compose.yml
 
+      - name: Set up SSH
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "$SSH_PRIVATE_KEY" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+
       - name: Connect to EC2 instance
         run: |
           ssh -i "$HOME/.ssh/id_rsa" ubuntu@$EC2_INSTANCE_IP << 'EOF'
