@@ -90,10 +90,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Copy Docker Compose file to EC2 instance
-        run: |
-          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-          scp  $DOCKER_COMPOSE_FILE -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP}:/home/ubuntu/docker-compose.yml
+#      - name: Copy Docker Compose file to EC2 instance
+#        run: |
+#          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+#          scp  $DOCKER_COMPOSE_FILE -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP}:/home/ubuntu/docker-compose.yml
 
       - name: Connect to EC2
         run: |
