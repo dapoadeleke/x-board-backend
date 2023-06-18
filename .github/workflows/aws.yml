@@ -35,5 +35,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${EC2_INSTANCE_IP} '
             cd /home/ubuntu/x-board/backend &&
             sudo docker-compose up --build --remove-orphans -d &&
-            sudo docker images -q | grep -v "$(docker ps -q)" | xargs docker rmi
+            sudo docker system prune
           '
