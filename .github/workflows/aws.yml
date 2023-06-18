@@ -50,10 +50,6 @@ jobs:
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
           aws configure set default.region $AWS_REGION
 
-      - name: Copy Docker Compose file to EC2 instance
-        run: |
-          scp -i "$HOME/.ssh/id_rsa" $DOCKER_COMPOSE_FILE ubuntu@$EC2_INSTANCE_IP:/home/ubuntu/docker-compose.yml
-
       - name: Set up SSH
         run: |
           mkdir -p $HOME/.ssh
@@ -61,9 +57,13 @@ jobs:
           chmod 600 $HOME/.ssh/id_rsa
           ssh-keyscan $EC2_INSTANCE_IP >> $HOME/.ssh/known_hosts
 
+      - name: Copy Docker Compose file to EC2 instance
+        run: |
+          scp -i $HOME/.ssh/id_rsa $DOCKER_COMPOSE_FILE ubuntu@$EC2_INSTANCE_IP:/home/ubuntu/docker-compose.yml
+
       - name: Connect to EC2 instance
         run: |
-          ssh -i "$HOME/.ssh/id_rsa" ubuntu@$EC2_INSTANCE_IP << 'EOF'
+          ssh -i $HOME/.ssh/id_rsa ubuntu@$EC2_INSTANCE_IP << 'EOF'
             cd /home/ubuntu
-            docker-compose up
+            docker-compose up -d
           EOF
