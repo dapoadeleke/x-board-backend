@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+    app:
+        container_name: x-board-backend
+        build: .
+        restart: always
+
+        volumes:
+            - .:/app
+            - /app/node_modules
+
+        ports:
+            -   5001:5001
+
+        environment:
+            NODE_ENV: production
+            DOTENV_KEY: dotenv://:key_df1d52c89a9cfc45d531d7f1dd3a6c8ad897d7c8ceba9419e56ae704e4d27341@dotenv.org/vault/.env.vault?environment=production
+
+
+
