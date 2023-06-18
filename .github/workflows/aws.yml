@@ -89,7 +89,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy in EC2
 
       - name: Copy Docker Compose file to EC2 instance
         run: |
